@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    
     return Scaffold(
       body: Column(
         children: [
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(bottom: 6),
+                            padding: EdgeInsets.only(bottom: 10),
                             child: Text(
                               " mobile",
                               style: TextStyle(
@@ -75,26 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: TextField(
-              textInputAction: TextInputAction.search,
-              decoration: InputDecoration(
-                hintText: "Masukan kata kunci disini",
-                isDense: true,
-                filled: true,
-                fillColor: Colors.grey[200],
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(16)
-                ),
-                suffixIcon: const Icon(Icons.search_rounded),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 16),
 
           Expanded(
             child: ListView.builder(
