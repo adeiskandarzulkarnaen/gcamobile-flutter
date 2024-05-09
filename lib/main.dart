@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gcamobile/live_stream_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:gcamobile/views/home_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
   runApp(const MyApp());
 }
 
@@ -14,9 +22,9 @@ class MyApp extends StatelessWidget {
       title: 'GCA Mobile',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: false,
+        useMaterial3: true,
       ),
-      home: const LiveStreamScreen(),
+      home: const HomeScreen(),
     );
   }
 }
