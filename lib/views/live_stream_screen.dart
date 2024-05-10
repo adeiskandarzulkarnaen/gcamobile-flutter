@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:http/http.dart' as http;
 import 'package:gcamobile/utils.dart';
 
 class LiveStreamScreen extends StatefulWidget {
@@ -19,17 +20,14 @@ class LiveStreamScreen extends StatefulWidget {
 
 class _LiveStreamScreenState extends State<LiveStreamScreen> {
   late Orientation _deviceOrientation;
+  String? _videoStreamError; // null if not error
+
   late VlcPlayerController _videoPlayerController;
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-    _videoPlayerController = VlcPlayerController.network(
-      widget.linkRtmp,
-      hwAcc: HwAcc.full,
-      autoPlay: true,
-      options: VlcPlayerOptions()
-    );
+    _initializeVideoPlayer();
   }
 
   @override
@@ -49,12 +47,23 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
           ? null
           : AppBar( title: Text(widget.cctvName)),
       body: Center(
-        child: VlcPlayer(
-          controller: _videoPlayerController,
-          aspectRatio: 16 / 9,
-          placeholder: const Center(
-            child: CircularProgressIndicator(),
-          ), 
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            VlcPlayer(
+              controller: _videoPlayerController,
+              aspectRatio: 16 / 9,
+              placeholder: const CircularProgressIndicator(
+                color: Colors.white,
+              ), 
+            ),
+
+            if (_videoStreamError != null)
+              Text(
+                _videoStreamError!,
+                style: const TextStyle(color: Colors.white),
+              )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -65,5 +74,28 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
         child: const Icon(Icons.sync),
       )
     );
+  }
+
+  Future<void> _initializeVideoPlayer() async {
+    _videoPlayerController = VlcPlayerController.network(
+      widget.linkRtmp,
+      hwAcc: HwAcc.full,
+      autoPlay: true,
+      options: VlcPlayerOptions(),
+    );
+    final error = await _getVideoStreamErrorStatus(widget.linkRtmp);
+    setState(() {
+      _videoStreamError = error;
+    });
+  }
+
+  Future<String?> _getVideoStreamErrorStatus(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) return null;
+      return "MP4 Streaming tidak diaktifkan oleh server";
+    } catch (e) {
+      return "tidak dapat terhubung ke jaringan";
+    }
   }
 }
