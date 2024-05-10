@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gcamobile/cctv_list.dart';
+import 'package:gcamobile/utils.dart';
 import 'package:gcamobile/views/about_screen.dart';
 import 'package:gcamobile/views/components/cctv_card.dart';
 
@@ -20,6 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
     size = MediaQuery.of(context).size;
     
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setDeviceOrientation(MediaQuery.of(context).orientation);
+        },
+        tooltip: 'Rotate Screen',
+        child: const Icon(Icons.sync),
+      ),
       body: Column(
         children: [
           SizedBox(height: MediaQuery.of(context).padding.top),

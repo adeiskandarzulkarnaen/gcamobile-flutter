@@ -11,17 +11,26 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.6
   flutter_vlc_player: ^7.4.1
+  animated_text_kit: ^4.2.2
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/cctv-icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter:  
   uses-material-design: true
   assets:
-    - assets
-    # - images/a_dot_ham.jpeg
+    - assets/
+    - assets/images/
   # fonts:
   #   - family: Schyler
   #     fonts:

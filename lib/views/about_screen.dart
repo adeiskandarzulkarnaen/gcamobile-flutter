@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gcamobile/utils.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -9,17 +10,48 @@ class AboutScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("about app"),
       ),
-      body: const SingleChildScrollView(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setDeviceOrientation(MediaQuery.of(context).orientation);
+        },
+        tooltip: 'Rotate Screen',
+        child: const Icon(Icons.sync),
+      ),
+      body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: 24,),
-              DevCard(name: 'Ade Iskandar Zulkarnaen', role: 'Fullstack developer', assetImage: 'assets/images/ade.jpeg',),
-              SizedBox(height: 24,),
-              DevCard(name: 'Abdul Latif', role: 'Ui/Ux Design || Flutter Enthusiast', assetImage: 'assets/images/abdul.jpeg',),
-              SizedBox(height: 24,),
-              DevCard(name: 'Ulfah Masripah', role: 'Flutter Entusiast', assetImage: 'assets/images/ulfah.jpeg',),
-              SizedBox(height: 24,),
+              const SizedBox(height: 24,),
+              const DevCard(name: 'Ade Iskandar Zulkarnaen', role: 'Fullstack Developer', assetImage: 'assets/images/ade.jpeg',),
+              const SizedBox(height: 24,),
+              const DevCard(name: 'Abdul Latif', role: 'Ui/Ux Design || Flutter Enthusiast', assetImage: 'assets/images/abdul.jpeg',),
+              const SizedBox(height: 24,),
+              const DevCard(name: 'Ulfah Masripah', role: 'Flutter Enthusiast', assetImage: 'assets/images/ulfah.jpeg',),
+              const SizedBox(height: 24,),
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                color: Colors.transparent,
+                child: const Column(
+                  children: [
+                    Text(
+                      "Garut CCTV Application",
+                      style: TextStyle(
+                        // color: Colors.grey,
+                        fontSize: 14.0,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    Text(
+                      "© 2024 itg.ac.id",
+                      style: TextStyle(
+                        // color: Colors.grey,
+                        fontSize: 12.0,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

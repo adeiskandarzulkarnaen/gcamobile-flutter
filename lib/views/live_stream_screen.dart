@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:gcamobile/utils.dart';
 
 class LiveStreamScreen extends StatefulWidget {
   final String cctvName;
@@ -56,6 +57,13 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
           ), 
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setDeviceOrientation(MediaQuery.of(context).orientation);
+        },
+        tooltip: 'Rotate Screen',
+        child: const Icon(Icons.sync),
+      )
     );
   }
 }
