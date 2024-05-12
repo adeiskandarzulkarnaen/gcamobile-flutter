@@ -14,3 +14,12 @@ void setDeviceOrientation(Orientation deviceOrientation) {
     ]);
   }
 }
+
+void setDeviceAutoOrientation() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
+}

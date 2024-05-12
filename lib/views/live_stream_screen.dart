@@ -27,7 +27,13 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
   @override
   void initState(){
     super.initState();
-    _initializeVideoPlayer();
+    _videoPlayerController = VlcPlayerController.network(
+      widget.linkRtmp,
+      hwAcc: HwAcc.full,
+      autoPlay: true,
+      options: VlcPlayerOptions(),
+    );
+    _initializeVideoStatus();
   }
 
   @override
@@ -35,6 +41,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
     super.dispose();
     await _videoPlayerController.stopRendererScanning();
     await _videoPlayerController.dispose();
+    setDeviceAutoOrientation();
   }
 
   @override
@@ -53,8 +60,10 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
             VlcPlayer(
               controller: _videoPlayerController,
               aspectRatio: 16 / 9,
-              placeholder: const CircularProgressIndicator(
-                color: Colors.white,
+              placeholder: const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
               ), 
             ),
 
@@ -76,14 +85,9 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
     );
   }
 
-  Future<void> _initializeVideoPlayer() async {
-    _videoPlayerController = VlcPlayerController.network(
-      widget.linkRtmp,
-      hwAcc: HwAcc.full,
-      autoPlay: true,
-      options: VlcPlayerOptions(),
-    );
+  Future<void> _initializeVideoStatus() async {
     final error = await _getVideoStreamErrorStatus(widget.linkRtmp);
+
     setState(() {
       _videoStreamError = error;
     });
