@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             style: const ButtonStyle(
-              iconSize: MaterialStatePropertyAll(32.0),
+              iconSize: MaterialStatePropertyAll(28.0),
               padding: MaterialStatePropertyAll(
                 EdgeInsets.only(
                   top: 8,

@@ -52,7 +52,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
       backgroundColor: Colors.black,
       appBar: _deviceOrientation == Orientation.landscape
           ? null
-          : AppBar( title: Text(widget.cctvName)),
+          : AppBar(title: Text(widget.cctvName)),
       body: Center(
         child: Stack(
           alignment: Alignment.center,
@@ -87,7 +87,6 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
 
   Future<void> _initializeVideoStatus() async {
     final error = await _getVideoStreamErrorStatus(widget.linkRtmp);
-
     setState(() {
       _videoStreamError = error;
     });
