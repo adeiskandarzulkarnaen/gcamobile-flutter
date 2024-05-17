@@ -26,20 +26,8 @@ class AboutScreen extends StatelessWidget {
                 children: [
                   DeveloperCard(
                     name: 'Ade Iskandar Zulkarnaen',
-                    role: 'Fullstack Developer', 
+                    role: 'Software Developer', 
                     imageAsset: 'assets/images/ade.jpeg', 
-                    imageWidth: imageCardWidth, 
-                  ),
-                  DeveloperCard(
-                    name: 'Abdul Latif',
-                    role: 'Ui/Ux Designer || Flutter Enthusiast', 
-                    imageAsset: 'assets/images/abdul.jpeg', 
-                    imageWidth: imageCardWidth, 
-                  ),
-                  DeveloperCard(
-                    name: 'Ulfah Masripah',
-                    role: 'Flutter Enthusiast', 
-                    imageAsset: 'assets/images/ulfah.jpeg', 
                     imageWidth: imageCardWidth, 
                   ),
                   const CopyrightCard(),
