@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
-import 'package:http/http.dart' as http;
 import 'package:gcamobile/utils.dart';
 
 class LiveStreamScreen extends StatefulWidget {
@@ -11,7 +9,7 @@ class LiveStreamScreen extends StatefulWidget {
   const LiveStreamScreen({
     super.key,
     required this.cctvName,
-    required this.linkRtmp
+    required this.linkRtmp,
   });
 
   @override
@@ -19,13 +17,12 @@ class LiveStreamScreen extends StatefulWidget {
 }
 
 class _LiveStreamScreenState extends State<LiveStreamScreen> {
-  late Orientation _deviceOrientation;
-  String? _videoStreamError; // null if not error
-
+  bool _isLoading = true;
+  String? _videoStreamError;
   late VlcPlayerController _videoPlayerController;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _videoPlayerController = VlcPlayerController.network(
       widget.linkRtmp,
@@ -33,24 +30,23 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
       autoPlay: true,
       options: VlcPlayerOptions(),
     );
-    _initializeVideoStatus();
+    _videoPlayerController.addListener(_onVlcPlayerStateChange);
   }
 
   @override
-  void dispose() async {
-    super.dispose();
-    await _videoPlayerController.stopRendererScanning();
-    await _videoPlayerController.dispose();
+  void dispose() {
+    _videoPlayerController.removeListener(_onVlcPlayerStateChange);
+    _videoPlayerController.stopRendererScanning();
+    _videoPlayerController.dispose();
     setDeviceAutoOrientation();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _deviceOrientation = MediaQuery.of(context).orientation;
-    
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: _deviceOrientation == Orientation.landscape
+      appBar: MediaQuery.of(context).orientation == Orientation.landscape
           ? null
           : AppBar(title: Text(widget.cctvName)),
       body: Center(
@@ -64,14 +60,20 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                 child: CircularProgressIndicator(
                   color: Colors.white,
                 ),
-              ), 
+              ),
             ),
-
+            if (_isLoading && _videoStreamError == null) 
+              const Center(
+                child: CircularProgressIndicator(color: Colors.white,)
+              ),
             if (_videoStreamError != null)
-              Text(
-                _videoStreamError!,
-                style: const TextStyle(color: Colors.white),
-              )
+              Center(
+                child: Text(
+                  _videoStreamError!,
+                  style: const TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
           ],
         ),
       ),
@@ -81,24 +83,26 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
         },
         tooltip: 'Rotate Screen',
         child: const Icon(Icons.sync),
-      )
+      ),
     );
   }
 
-  Future<void> _initializeVideoStatus() async {
-    final error = await _getVideoStreamErrorStatus(widget.linkRtmp);
+  void _onVlcPlayerStateChange() {
+    final playingState = _videoPlayerController.value.playingState;
     setState(() {
-      _videoStreamError = error;
+      if (playingState == PlayingState.buffering) {
+        _isLoading = true;
+        _videoStreamError = null; // Ensure error is reset when buffering
+      } else if (playingState == PlayingState.stopped) {
+        _isLoading = true;
+        _videoStreamError = "Stream tidak tersedia saat ini.";
+      } else if (playingState == PlayingState.error) {
+        _isLoading = false;
+        _videoStreamError = "Error: video stopped unexpectedly.";
+      } else {
+        _isLoading = false;
+        _videoStreamError = null;
+      }
     });
-  }
-
-  Future<String?> _getVideoStreamErrorStatus(String url) async {
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) return null;
-      return "MP4 Streaming tidak diaktifkan oleh server";
-    } catch (e) {
-      return "tidak dapat terhubung ke jaringan";
-    }
   }
 }
