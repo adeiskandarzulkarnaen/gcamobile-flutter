@@ -120,12 +120,11 @@ class CopyrightCard extends StatelessWidget {
               fontStyle: FontStyle.normal,
             ),
             textAlign: TextAlign.center,
-
           ),
           Text(
             "©2023 itg.ac.id",
             style: TextStyle(
-              // color: Colors.grey,
+              color: Colors.grey,
               fontSize: 12.0,
               fontStyle: FontStyle.italic,
             ),
