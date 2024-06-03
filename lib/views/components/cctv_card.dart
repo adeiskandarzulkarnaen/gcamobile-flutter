@@ -51,7 +51,7 @@ class CctvCard extends StatelessWidget {
                     topLeft: Radius.circular(16),
                     bottomLeft: Radius.circular(16),
                   ),
-                  child: Image.asset('assets/images/garut.jpg', fit: BoxFit.cover)
+                  child: Image.asset('assets/cctv-icon.png', fit: BoxFit.contain)
                 ),
               )
             ),
